@@ -11,7 +11,7 @@ namespace QLNhanSu
     internal class SQLConnect
     {
         private string database = "DESKTOP-RG3MHSF";
-        private string datasource = "nhansu";
+        private string datasource = "qlnhansu";
         private string _connectionString;
 
         public SQLConnect()
