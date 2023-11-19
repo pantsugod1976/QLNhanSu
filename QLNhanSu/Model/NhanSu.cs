@@ -6,15 +6,19 @@ using System.Threading.Tasks;
 
 namespace QLNhanSu.Model
 {
-    internal class NhanSu
+    public class NhanSu
     {
         private int id;
-        private string name;
-        private bool gt;
+        private string ho_ten;
+        private string gt;
         private DateTime ngaysinh;
-        private string chuc_vu;
-        private string phong_ban;
-        private string address;
+        private string dia_chi;
+        private string sdt;
+        private string qq;
+        private int phong_ban;
+        private int chuc_vu;
+        private string password;
+        private bool user_type;
 
         public int ID
         {
@@ -22,22 +26,34 @@ namespace QLNhanSu.Model
             set { id = value; }
         }
 
-        public string Name
+        public string HT
         {
-            get { return name; }
-            set { name = value; }
+            get { return ho_ten; }
+            set { ho_ten = value; }
         }
 
-        public string Address
+        public string DC
         {
-            get { return address; }
-            set { address = value; }
+            get { return dia_chi; }
+            set { dia_chi = value; }
         }
 
-        public bool GT
+        public string GT
         {
             get { return gt; }
             set { gt = value; }
+        }
+
+        public string QQ
+        {
+            get { return qq; }
+            set { qq = value; }
+        }
+
+        public string SDT
+        {
+            get { return sdt; }
+            set { sdt = value; }
         }
 
         public DateTime Ngaysinh
@@ -46,31 +62,60 @@ namespace QLNhanSu.Model
             set { ngaysinh = value; }
         }
 
-        public string Chuc_vu
+        public int Chuc_vu
         {
             get { return chuc_vu; }
             set { chuc_vu = value; }
         }
 
-        public string Phong_ban
+        public int Phong_ban
         {
             get { return phong_ban; }
             set { phong_ban = value; }
+        }
+
+        public bool User_type
+        {
+            get { return user_type; }
+            set { user_type = value; }
+        }
+
+        public string Password
+        {
+            get { return password; }
+            set { password = value; }
         }
         public NhanSu()
         {
         }
 
-        public NhanSu(int id, string name, bool gt, string address, DateTime ngaysinh, string chuc_vu, string phong_ban)
+        public NhanSu(int id, string ho_ten, string gt, DateTime ngaysinh, string dia_chi, string sdt, string qq, int phong_ban, int chuc_vu, bool user_type, string password)
         {
-            Random rd = new Random();
-            this.id = rd.Next(100, 1000);
-            this.name = name;
+            this.id = id;
+            this.ho_ten = ho_ten;
             this.gt = gt;
-            this.address = address;
             this.ngaysinh = ngaysinh;
-            this.chuc_vu = chuc_vu;
+            this.dia_chi = dia_chi;
+            this.sdt = sdt;
+            this.qq = qq;
             this.phong_ban = phong_ban;
+            this.chuc_vu = chuc_vu;
+            this.user_type = user_type;
+            this.password = password;
+        }
+
+        public NhanSu(string ho_ten, string gt, DateTime ngaysinh, string dia_chi, string sdt, string qq, int phong_ban, int chuc_vu, bool user_type, string password)
+        {
+            this.ho_ten = ho_ten;
+            this.gt = gt;
+            this.ngaysinh = ngaysinh;
+            this.dia_chi = dia_chi;
+            this.sdt = sdt;
+            this.qq = qq;
+            this.phong_ban = phong_ban;
+            this.chuc_vu = chuc_vu;
+            this.user_type = user_type;
+            this.password = password;
         }
     }
 }
