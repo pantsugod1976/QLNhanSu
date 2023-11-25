@@ -51,6 +51,7 @@ namespace QLNhanSu.ViewModel
                             Chuc_vu = Convert.ToInt32(reader.GetValue(8)),
                             User_type = Convert.ToInt32(reader.GetValue(10)) == 1 ? true : false,
                             Password = reader.GetValue(9).ToString(),
+                            HSL = (decimal)reader.GetValue(11),
                         };
                     }
                 }

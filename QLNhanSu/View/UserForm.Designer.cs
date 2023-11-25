@@ -43,10 +43,10 @@
             label3 = new Label();
             label2 = new Label();
             groupBox2 = new GroupBox();
+            lblCalLuong = new Label();
+            dateTimePicker1 = new DateTimePicker();
             lblLuong = new Label();
             btnLuong = new Button();
-            label23 = new Label();
-            label22 = new Label();
             label21 = new Label();
             lblHS = new Label();
             label19 = new Label();
@@ -63,8 +63,7 @@
             menuToolStripMenuItem = new ToolStripMenuItem();
             signOutToolStripMenuItem = new ToolStripMenuItem();
             thoátToolStripMenuItem = new ToolStripMenuItem();
-            comboBox1 = new ComboBox();
-            comboBox2 = new ComboBox();
+            chấmCôngToolStripMenuItem = new ToolStripMenuItem();
             groupBox1.SuspendLayout();
             groupBox2.SuspendLayout();
             groupBox3.SuspendLayout();
@@ -213,12 +212,10 @@
             // 
             // groupBox2
             // 
-            groupBox2.Controls.Add(comboBox2);
-            groupBox2.Controls.Add(comboBox1);
+            groupBox2.Controls.Add(lblCalLuong);
+            groupBox2.Controls.Add(dateTimePicker1);
             groupBox2.Controls.Add(lblLuong);
             groupBox2.Controls.Add(btnLuong);
-            groupBox2.Controls.Add(label23);
-            groupBox2.Controls.Add(label22);
             groupBox2.Controls.Add(label21);
             groupBox2.Controls.Add(lblHS);
             groupBox2.Controls.Add(label19);
@@ -234,6 +231,24 @@
             groupBox2.TabIndex = 1;
             groupBox2.TabStop = false;
             // 
+            // lblCalLuong
+            // 
+            lblCalLuong.AutoSize = true;
+            lblCalLuong.Location = new Point(63, 171);
+            lblCalLuong.Name = "lblCalLuong";
+            lblCalLuong.Size = new Size(20, 15);
+            lblCalLuong.TabIndex = 16;
+            lblCalLuong.Text = "0đ";
+            // 
+            // dateTimePicker1
+            // 
+            dateTimePicker1.CustomFormat = "MM/yyyy";
+            dateTimePicker1.Format = DateTimePickerFormat.Custom;
+            dateTimePicker1.Location = new Point(4, 130);
+            dateTimePicker1.Name = "dateTimePicker1";
+            dateTimePicker1.Size = new Size(77, 23);
+            dateTimePicker1.TabIndex = 15;
+            // 
             // lblLuong
             // 
             lblLuong.AutoSize = true;
@@ -244,32 +259,13 @@
             // 
             // btnLuong
             // 
-            btnLuong.Enabled = false;
-            btnLuong.Location = new Point(210, 130);
+            btnLuong.Location = new Point(96, 132);
             btnLuong.Name = "btnLuong";
             btnLuong.Size = new Size(75, 23);
             btnLuong.TabIndex = 13;
             btnLuong.Text = "Tính lương";
             btnLuong.UseVisualStyleBackColor = true;
             btnLuong.Click += btnLuong_Click;
-            // 
-            // label23
-            // 
-            label23.AutoSize = true;
-            label23.Location = new Point(6, 133);
-            label23.Name = "label23";
-            label23.Size = new Size(40, 15);
-            label23.TabIndex = 12;
-            label23.Text = "Tháng";
-            // 
-            // label22
-            // 
-            label22.AutoSize = true;
-            label22.Location = new Point(106, 133);
-            label22.Name = "label22";
-            label22.Size = new Size(12, 15);
-            label22.TabIndex = 11;
-            label22.Text = "/";
             // 
             // label21
             // 
@@ -368,9 +364,8 @@
             lblCC.Font = new Font("Segoe UI", 9.75F, FontStyle.Regular, GraphicsUnit.Point);
             lblCC.Location = new Point(6, 70);
             lblCC.Name = "lblCC";
-            lblCC.Size = new Size(43, 17);
+            lblCC.Size = new Size(0, 17);
             lblCC.TabIndex = 1;
-            lblCC.Text = "label8";
             // 
             // btnCC
             // 
@@ -384,7 +379,7 @@
             // 
             // menuStrip1
             // 
-            menuStrip1.Items.AddRange(new ToolStripItem[] { menuToolStripMenuItem });
+            menuStrip1.Items.AddRange(new ToolStripItem[] { menuToolStripMenuItem, chấmCôngToolStripMenuItem });
             menuStrip1.Location = new Point(0, 0);
             menuStrip1.Name = "menuStrip1";
             menuStrip1.Size = new Size(670, 24);
@@ -401,32 +396,23 @@
             // signOutToolStripMenuItem
             // 
             signOutToolStripMenuItem.Name = "signOutToolStripMenuItem";
-            signOutToolStripMenuItem.Size = new Size(118, 22);
+            signOutToolStripMenuItem.Size = new Size(180, 22);
             signOutToolStripMenuItem.Text = "Sign out";
             signOutToolStripMenuItem.Click += signOutToolStripMenuItem_Click;
             // 
             // thoátToolStripMenuItem
             // 
             thoátToolStripMenuItem.Name = "thoátToolStripMenuItem";
-            thoátToolStripMenuItem.Size = new Size(118, 22);
+            thoátToolStripMenuItem.Size = new Size(180, 22);
             thoátToolStripMenuItem.Text = "Thoát";
             thoátToolStripMenuItem.Click += thoátToolStripMenuItem_Click;
             // 
-            // comboBox1
+            // chấmCôngToolStripMenuItem
             // 
-            comboBox1.FormattingEnabled = true;
-            comboBox1.Location = new Point(61, 130);
-            comboBox1.Name = "comboBox1";
-            comboBox1.Size = new Size(39, 23);
-            comboBox1.TabIndex = 15;
-            // 
-            // comboBox2
-            // 
-            comboBox2.FormattingEnabled = true;
-            comboBox2.Location = new Point(124, 130);
-            comboBox2.Name = "comboBox2";
-            comboBox2.Size = new Size(80, 23);
-            comboBox2.TabIndex = 16;
+            chấmCôngToolStripMenuItem.Name = "chấmCôngToolStripMenuItem";
+            chấmCôngToolStripMenuItem.Size = new Size(83, 20);
+            chấmCôngToolStripMenuItem.Text = "Chấm Công";
+            chấmCôngToolStripMenuItem.Click += chấmCôngToolStripMenuItem_Click;
             // 
             // UserForm
             // 
@@ -482,15 +468,14 @@
         private Label label15;
         private Label lblID;
         private Button btnLuong;
-        private Label label23;
-        private Label label22;
         private Label label21;
         private Label lblHS;
         private Label lblLuong;
         private Button btnCC;
         private Button btnEdit;
         private Label lblCC;
-        private ComboBox comboBox2;
-        private ComboBox comboBox1;
+        private Label lblCalLuong;
+        private DateTimePicker dateTimePicker1;
+        private ToolStripMenuItem chấmCôngToolStripMenuItem;
     }
 }

@@ -1,4 +1,6 @@
 ﻿using QLNhanSu.View.ChildView;
+using QLNhanSu.View.ChildView.FunctionForm;
+using QLNhanSu.View.ChildView.ThongKe;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -65,6 +67,31 @@ namespace QLNhanSu.View
         private void AdminForm_FormClosed(object sender, FormClosedEventArgs e)
         {
             Application.OpenForms["LoginForm"].Show();
+        }
+
+        private void chấmCôngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var f = new QLChamCong();
+            f.parent_form = this;
+            open_ChildForm(f);
+        }
+
+        private void lươngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var f = new QLLuong();
+            f.parent_form = this;
+            open_ChildForm(f);
+        }
+
+        private void nhânViênToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var f = new TKNhanVien();
+            f.ShowDialog();
+        }
+
+        private void bảngLươngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }

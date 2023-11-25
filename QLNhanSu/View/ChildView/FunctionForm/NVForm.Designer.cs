@@ -56,6 +56,8 @@
             btFunction = new Button();
             btCancel = new Button();
             btnCC = new Button();
+            tbHSL = new TextBox();
+            label8 = new Label();
             groupBox1.SuspendLayout();
             SuspendLayout();
             // 
@@ -97,6 +99,8 @@
             // 
             // groupBox1
             // 
+            groupBox1.Controls.Add(tbHSL);
+            groupBox1.Controls.Add(label8);
             groupBox1.Controls.Add(cbType);
             groupBox1.Controls.Add(lblType);
             groupBox1.Controls.Add(tbPass);
@@ -320,6 +324,23 @@
             btnCC.UseVisualStyleBackColor = true;
             btnCC.Click += button1_Click;
             // 
+            // tbHSL
+            // 
+            tbHSL.Location = new Point(446, 282);
+            tbHSL.Name = "tbHSL";
+            tbHSL.Size = new Size(193, 23);
+            tbHSL.TabIndex = 25;
+            // 
+            // label8
+            // 
+            label8.AutoSize = true;
+            label8.Location = new Point(381, 285);
+            label8.Name = "label8";
+            label8.Size = new Size(28, 15);
+            label8.TabIndex = 24;
+            label8.Text = "HSL";
+            label8.Click += label8_Click;
+            // 
             // NVForm
             // 
             AutoScaleDimensions = new SizeF(7F, 15F);
@@ -371,5 +392,7 @@
         private Label lblType;
         private TextBox tbPass;
         private Label lblPass;
+        private TextBox tbHSL;
+        private Label label8;
     }
 }

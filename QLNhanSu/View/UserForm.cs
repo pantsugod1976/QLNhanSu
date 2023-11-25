@@ -82,14 +82,26 @@ namespace QLNhanSu.View
 
         private void btnLuong_Click(object sender, EventArgs e)
         {
-        }
-
-        private void numberYear_ValueChanged(object sender, EventArgs e)
-        {
-        }
-
-        private void numberMonth_ValueChanged(object sender, EventArgs e)
-        {
+            var date = dateTimePicker1.Value;
+            if (date.Month == DateTime.Now.Month && date.Year == DateTime.Now.Year) {
+                MessageBox.Show("Tháng làm việc chưa kết thúc");
+                return;
+            }
+            if(date.Year > DateTime.Now.Year)
+            {
+                MessageBox.Show("Chọn năm hợp lệ");
+                return;
+            }
+            int manv = Convert.ToInt32(lblID.Text);
+            var luong = viewModel.GetLuong(manv, date.Month, date.Year);
+            if (luong != null)
+            {
+                lblCalLuong.Text = luong.luong.ToString() + "đ";
+            }
+            else
+            {
+                MessageBox.Show("Information not found");
+            }
         }
 
         private void btnEdit_Click(object sender, EventArgs e)
@@ -104,13 +116,22 @@ namespace QLNhanSu.View
         private void btnCC_Click(object sender, EventArgs e)
         {
             songay++;
-            viewModel.addChamCong(nhansu, songay);
+            var hs = Convert.ToDouble(lblHS.Text);
+            viewModel.addChamCong(nhansu, songay, hs);
             ngayChamCong();
         }
 
         public void UpdateView()
         {
             GenerateView();
+        }
+
+        private void chấmCôngToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            var dt = viewModel.queryChamCongNV(nhansu.ID);
+            var f = new TTChamCong();
+            f.dt = dt;
+            f.ShowDialog(this);
         }
     }
 }

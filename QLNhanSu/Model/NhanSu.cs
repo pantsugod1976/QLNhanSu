@@ -19,6 +19,7 @@ namespace QLNhanSu.Model
         private int chuc_vu;
         private string password;
         private bool user_type;
+        private decimal hsl;
 
         public int ID
         {
@@ -85,11 +86,18 @@ namespace QLNhanSu.Model
             get { return password; }
             set { password = value; }
         }
+
+        public decimal HSL
+        {
+            get { return hsl; }
+            set { hsl = value; }
+        }
+
         public NhanSu()
         {
         }
 
-        public NhanSu(int id, string ho_ten, string gt, DateTime ngaysinh, string dia_chi, string sdt, string qq, int phong_ban, int chuc_vu, bool user_type, string password)
+        public NhanSu(int id, string ho_ten, string gt, DateTime ngaysinh, string dia_chi, string sdt, string qq, int phong_ban, int chuc_vu, bool user_type, string password, decimal hsl)
         {
             this.id = id;
             this.ho_ten = ho_ten;
@@ -102,9 +110,10 @@ namespace QLNhanSu.Model
             this.chuc_vu = chuc_vu;
             this.user_type = user_type;
             this.password = password;
+            this.hsl = hsl;
         }
 
-        public NhanSu(string ho_ten, string gt, DateTime ngaysinh, string dia_chi, string sdt, string qq, int phong_ban, int chuc_vu, bool user_type, string password)
+        public NhanSu(string ho_ten, string gt, DateTime ngaysinh, string dia_chi, string sdt, string qq, int phong_ban, int chuc_vu, bool user_type, string password, decimal hsl)
         {
             this.ho_ten = ho_ten;
             this.gt = gt;
@@ -116,6 +125,7 @@ namespace QLNhanSu.Model
             this.chuc_vu = chuc_vu;
             this.user_type = user_type;
             this.password = password;
+            this.hsl = hsl;
         }
     }
 }

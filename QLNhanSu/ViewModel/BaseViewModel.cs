@@ -96,20 +96,85 @@ namespace QLNhanSu.ViewModel
             }
         }
 
-        public DataTable queryChamCong()
-        {
-            var sql = "SELECT * FROM ChamCong";
-            var temp = new DataTable();
+        public DataTable getLuongNV(int manv) {
+            var dt = new DataTable();
             using (var conn = connection.getSQLConnection())
             {
                 conn.Open();
-                var cmd = new SqlCommand (sql, conn);
-                using (var reader = cmd.ExecuteReader())
+                var sql = "SELECT * FROM Luong WHERE ma_nv = @id";
+                var cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("id", manv);
+                using ( var reader = cmd.ExecuteReader())
                 {
-                    temp.Load(reader);
+                    dt.Load(reader);
                 }
             }
-            return (temp);
+            return dt;
+        }
+
+        public DataTable queryChamCongNV(int ma_nv)
+        {
+            var dt = new DataTable();
+            var sql = "SELECT thang as 'Tháng', nam as 'Năm', so_ngay as 'Số ngày làm việc'" +
+                " FROM ChamCong WHERE ma_nv = @id";
+            using (var conn = connection.getSQLConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("id", ma_nv);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    dt.Load(reader);
+                }
+            }
+            return dt;
+        }
+
+        public void DataToCsv(DataTable dt)
+        {
+            var dialog = new SaveFileDialog();
+            dialog.FileName = "TT" + DateTime.Now.Hour.ToString();
+
+            if (dialog.ShowDialog() == DialogResult.OK)
+            {
+                string savePath = Path.GetDirectoryName(dialog.FileName);
+                StreamWriter sw = new StreamWriter(savePath, false);
+                //headers
+                for (int i = 0; i < dt.Columns.Count; i++)
+                {
+                    sw.Write(dt.Columns[i]);
+                    if (i < dt.Columns.Count - 1)
+                    {
+                        sw.Write(",");
+                    }
+                }
+                sw.Write(sw.NewLine);
+                foreach (DataRow dr in dt.Rows)
+                {
+                    for (int i = 0; i < dt.Columns.Count; i++)
+                    {
+                        if (!Convert.IsDBNull(dr[i]))
+                        {
+                            string value = dr[i].ToString();
+                            if (value.Contains(','))
+                            {
+                                value = String.Format("\"{0}\"", value);
+                                sw.Write(value);
+                            }
+                            else
+                            {
+                                sw.Write(dr[i].ToString());
+                            }
+                        }
+                        if (i < dt.Columns.Count - 1)
+                        {
+                            sw.Write(",");
+                        }
+                    }
+                    sw.Write(sw.NewLine);
+                }
+                sw.Close();
+            }
         }
     }
 }

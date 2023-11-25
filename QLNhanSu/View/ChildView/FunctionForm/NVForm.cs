@@ -47,7 +47,7 @@ namespace QLNhanSu.View.ChildView.FunctionForm
                 tbHS.Enabled = false;
                 cbType.Enabled = !isFromUser;
                 tbID.Enabled = !isFromUser;
-                btnCC.Visible = !isFromUser;
+                btnCC.Visible = isFromUser;
 
 
                 btFunction.Text = "Cập nhật";
@@ -80,6 +80,7 @@ namespace QLNhanSu.View.ChildView.FunctionForm
                 tbHS.Text = cv.HS.ToString();
                 cbCV.SelectedIndex = cbCV.Items.IndexOf(cv.TenCV);
                 cbPhong.SelectedIndex = cbPhong.Items.IndexOf(phong.TenPhong);
+                tbHSL.Text = ns.HSL.ToString();
             }
         }
 
@@ -125,7 +126,8 @@ namespace QLNhanSu.View.ChildView.FunctionForm
                 Chuc_vu = cbCV.SelectedIndex,
                 Password = tbPass.Text,
                 Phong_ban = cbPhong.SelectedIndex,
-                User_type = type
+                User_type = type,
+                HSL = decimal.Parse(tbHSL.Text),
             };
 
             if (isInsert)
@@ -146,6 +148,11 @@ namespace QLNhanSu.View.ChildView.FunctionForm
         }
 
         private void button1_Click(object sender, EventArgs e)
+        {
+            var dt = viewModel.queryChamCongNV(int.Parse(tbID.Text));
+        }
+
+        private void label8_Click(object sender, EventArgs e)
         {
 
         }

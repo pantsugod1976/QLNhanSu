@@ -13,7 +13,6 @@ namespace QLNhanSu.ViewModel
     internal class AdminViewModel : BaseViewModel
     {
         private SQLConnect connection = new SQLConnect();
-        private int count;
 
         public DataTable queryAll(string sql)
         {
@@ -188,6 +187,7 @@ namespace QLNhanSu.ViewModel
                             Chuc_vu = Convert.ToInt32(reader.GetValue(8)),
                             User_type = Convert.ToInt32(reader.GetValue(10)) == 1 ? true : false,
                             Password = reader.GetValue(9).ToString(),
+                            HSL = (decimal)reader.GetValue(11),
                         };
                     }
                 }
@@ -195,9 +195,24 @@ namespace QLNhanSu.ViewModel
             }
         }
 
+        public DataTable queryNVP(string ten_phong)
+        {
+            var dt = new DataTable();
+            var sql = "select * from NhanVien where ma_phong = (select ma_phong from Phong where ten_phong = @name)";
+            using (var conn = connection.getSQLConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("name", ten_phong);
+                var reader = cmd.ExecuteReader();
+                dt.Load(reader);
+            }
+            return dt;
+        }
+
         public void InsertNV(NhanSu ns)
         {
-            var sql = "INSERT INTO NhanVien VALUES (@ht, @gt, @ns, @dc, @sdt, @qq, @phong, @cv, @pass, @type)";
+            var sql = "INSERT INTO NhanVien VALUES (@ht, @gt, @ns, @dc, @sdt, @qq, @phong, @cv, @pass, @type, @hsl)";
             using (var conn = connection.getSQLConnection())
             {
                 conn.Open();
@@ -212,6 +227,7 @@ namespace QLNhanSu.ViewModel
                 cmd.Parameters.AddWithValue("cv", ns.Chuc_vu);
                 cmd.Parameters.AddWithValue("pass", ns.Password);
                 cmd.Parameters.AddWithValue("type", ns.User_type);
+                cmd.Parameters.AddWithValue("hsl", ns.HSL);
                 cmd.ExecuteNonQuery();
             }
         }
@@ -227,6 +243,165 @@ namespace QLNhanSu.ViewModel
                 cmd.Parameters.AddWithValue("id", ID);
                 cmd.ExecuteNonQuery();
             }
+        }
+
+        public DataTable queryChamCong()
+        {
+            var sql = "SELECT ChamCong.ma_nv as 'Mã nhân viên', ho_ten as 'Họ tên', gt as 'Giới tính', ngay_sinh as 'Ngày sinh', ten_phong as 'Phòng', so_ngay as 'ngày làm việc'" +
+                "FROM ChamCong INNER JOIN NhanVien " +
+                "ON ChamCong.ma_nv = NhanVien.ma_nv " +
+                "JOIN Phong ON NhanVien.ma_phong = Phong.ma_phong";
+            var temp = new DataTable();
+            using (var conn = connection.getSQLConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(sql, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    temp.Load(reader);
+                }
+            }
+            return (temp);
+        }
+
+        public DataTable queryChamCongDate(int thang, int nam)
+        {
+            var sql = "SELECT ChamCong.ma_nv as 'Mã nhân viên', ho_ten as 'Họ tên', gt as 'Giới tính', ngay_sinh as 'Ngày sinh', ten_phong as 'Phòng', so_ngay as 'ngày làm việc'" +
+                "FROM ChamCong INNER JOIN NhanVien " +
+                "ON ChamCong.ma_nv = NhanVien.ma_nv " +
+                "JOIN Phong ON NhanVien.ma_phong = Phong.ma_phong " +
+                "WHERE thang = @thang AND nam = @nam";
+            var temp = new DataTable();
+            using (var conn = connection.getSQLConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("thang", thang);
+                cmd.Parameters.AddWithValue("nam", nam);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    temp.Load(reader);
+                }
+            }
+            return (temp);
+        }
+
+        public DataTable queryChamCongDateP(int thang, int nam, string phong)
+        {
+            var sql = "SELECT ChamCong.ma_nv as 'Mã nhân viên', ho_ten as 'Họ tên', gt as 'Giới tính', ngay_sinh as 'Ngày sinh', Phong.ten_phong as 'Phòng', so_ngay as 'ngày làm việc'" +
+                "FROM ChamCong INNER JOIN NhanVien " +
+                "ON ChamCong.ma_nv = NhanVien.ma_nv " +
+                "JOIN Phong ON NhanVien.ma_phong = Phong.ma_phong " +
+                "WHERE thang = @thang AND nam = @nam AND Phong.ten_phong = @phong";
+            var temp = new DataTable();
+            using (var conn = connection.getSQLConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("thang", thang);
+                cmd.Parameters.AddWithValue("nam", nam);
+                cmd.Parameters.AddWithValue("phong", phong);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    temp.Load(reader);
+                }
+            }
+            return (temp);
+        }
+
+        public void updateChamCong(int ma_nv, int so_ngay)
+        {
+            var sql = "UPDATE ChamCong SET so_ngay = @so_ngay WHERE ma_nv = @ma_nv";
+            using (var conn = connection.getSQLConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("so_ngay", so_ngay);
+                cmd.Parameters.AddWithValue("ma_nv", ma_nv);
+                cmd.ExecuteNonQuery();
+            }
+        }
+
+        public DataTable queryLuong(int thang, string phong)
+        {
+            var dt = new DataTable();
+            dt.Clear();
+            dt.Columns.Add("Mã nhân viên");
+            dt.Columns.Add("Tháng");
+            dt.Columns.Add("Phòng");
+            dt.Columns.Add("Lương");
+            dt.Columns.Add("Thuế");
+            var year = DateTime.Now.Year;
+            var sql = "SELECT Luong.ma_nv, Luong.thang, Luong, so_ngay " +
+                "FROM Luong JOIN ChamCong " +
+                "ON Luong.ma_nv = ChamCong.ma_nv AND Luong.thang = ChamCong.thang AND Luong.nam = ChamCong.nam " +
+                "JOIN NhanVien ON NhanVien.ma_nv = ChamCong.ma_nv " +
+                "WHERE Luong.thang = @thang AND Luong.nam = @nam AND ma_phong = (select ma_phong from Phong where ten_phong = @phong)";
+            using (var conn = connection.getSQLConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(sql, conn);
+                cmd.Parameters.AddWithValue("thang", thang);
+                cmd.Parameters.AddWithValue("nam", year);
+                cmd.Parameters.AddWithValue("phong", phong);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        var row = dt.NewRow();
+                        int so_ngay = (int)reader[3];
+                        int luong = (int)reader[2];
+                        double thue = 0;
+                        if (so_ngay < 20)
+                        {
+                            luong -= (20 - so_ngay) * 500000;
+                        }
+                        if (luong > 10000000)
+                        {
+                            thue = luong * 10 / 100;
+                        }
+                        row["Mã nhân viên"] = reader[0].ToString();
+                        row["Tháng"] = reader.GetInt32(1);
+                        row["Phòng"] = phong;
+                        row["Lương"] = luong;
+                        row["Thuế"] = thue;
+                        dt.Rows.Add(row);
+                    }
+                }
+            }
+            return dt;
+        }
+
+        public int tongLuong()
+        {
+            var sum = 0;
+            var sql = "SELECT Luong.ma_nv, Luong.thang, Luong, so_ngay " +
+                "FROM Luong JOIN ChamCong " +
+                "ON Luong.ma_nv = ChamCong.ma_nv AND Luong.thang = ChamCong.thang AND Luong.nam = ChamCong.nam ";
+                using (var conn = connection.getSQLConnection())
+            {
+                conn.Open();
+                var cmd = new SqlCommand(sql, conn);
+                using (var reader = cmd.ExecuteReader())
+                {
+                    while (reader.Read())
+                    {
+                        int so_ngay = (int)reader[3];
+                        int luong = (int)reader[2];
+                        double thue = 0;
+                        if (so_ngay < 20)
+                        {
+                            luong -= (20 - so_ngay) * 500000;
+                        }
+                        if (luong > 10000000)
+                        {
+                            thue = luong * 10 / 100;
+                        }
+                        sum += luong - (int)thue;
+                    }
+                }
+            }
+            return sum;
         }
     }
 }
